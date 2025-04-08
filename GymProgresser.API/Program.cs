@@ -1,4 +1,7 @@
 
+using GymProgresser.Infrastructure.EF;
+using Microsoft.EntityFrameworkCore;
+
 namespace GymProgresser.API
 {
     public class Program
@@ -13,7 +16,7 @@ namespace GymProgresser.API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
+            builder.Services.AddDbContext<GymProgressDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
