@@ -1,6 +1,0 @@
-@GymProgresserAPI_HostAddress = http://localhost:5168
-
-GET {{GymProgresserAPI_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
