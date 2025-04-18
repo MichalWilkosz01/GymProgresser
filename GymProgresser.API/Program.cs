@@ -9,6 +9,9 @@ using GymProgresser.Infrastructure.Security;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
+using GymProgresser.Infrastructure.EF;
+using Microsoft.EntityFrameworkCore;
+
 namespace GymProgresser.API
 {
     public class Program

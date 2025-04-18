@@ -21,4 +21,8 @@
     <ProjectReference Include="..\GymProgresser.Infrastructure\GymProgresser.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\GymProgresser.Infrastructure\GymProgresser.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
