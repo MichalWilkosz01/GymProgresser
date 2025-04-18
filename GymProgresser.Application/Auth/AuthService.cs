@@ -1,0 +1,77 @@
+﻿using FluentValidation;
+using GymProgresser.Application.Auth.Classes;
+using GymProgresser.Application.Auth.Dtos;
+using GymProgresser.Application.Auth.Interfaces;
+using GymProgresser.Application.Users;
+using GymProgresser.Domain.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace GymProgresser.Application.Auth
+{
+    public class AuthService : IAuthService
+    {
+        private readonly IValidator<RegisterRequestDto> _validatorRegister;
+        private readonly IUserRepository _userRepository;
+        private readonly IPasswordManager _passwordManager;
+
+        public AuthService(IValidator<RegisterRequestDto> validatorRegister, IUserRepository userRepository,IPasswordManager passwordManager)
+        {
+            _validatorRegister = validatorRegister;
+            _userRepository = userRepository;
+            _passwordManager = passwordManager;
+        }
+        public async Task<string> LoginAsync(LoginRequestDto loginRequestDto)
+        {
+            var user = await _userRepository.GetUserByEmailAsync(loginRequestDto.Email);
+
+            if (user is null)
+            {
+                throw new UnauthorizedAccessException("Nieprawidłowy adres email lub hasło.");
+            }
+
+
+            var isPasswordValid = _passwordManager.VerifyPassword(new PasswordVerificationRequest(user, loginRequestDto.Password));
+
+            if (!isPasswordValid)
+                throw new UnauthorizedAccessException("Nieprawidłowy adres email lub hasło.");
+
+            return "";
+        }
+
+
+        public async Task<string> RegisterAsync(RegisterRequestDto registerRequestDto)
+        {
+            var validationResult = await _validatorRegister.ValidateAsync(registerRequestDto);
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
+
+            var userFromDb = await _userRepository.GetUserByEmailAsync(registerRequestDto.Email);
+
+            if (userFromDb is not null)
+            {
+                throw new InvalidOperationException("Użytkownik o tym adresie email już istnieje.");
+            }
+
+            var passwordHashAndSalt = _passwordManager.HashPassword(registerRequestDto.Password);
+
+            var user = new User()
+            {
+                CreatedAt = DateTime.Now,
+                PasswordHash = passwordHashAndSalt.Hash,
+                Salt = passwordHashAndSalt.Salt,
+                Email = registerRequestDto.Email
+            };
+
+            await _userRepository.AddUserAsync(user);
+
+            return "";
+            //throw new NotImplementedException();
+        }
+    }
+}
