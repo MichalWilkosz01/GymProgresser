@@ -11,6 +11,6 @@ namespace GymProgresser.Application.Auth.Interfaces
     public interface IPasswordManager
     {
         public PasswordHashResult HashPassword(string plainPassword);
-        public bool VerifyPassword(PasswordVerificationRequest passwordVerificationRequest);
+        public bool VerifyPassword(PasswordVerificationData passwordVerificationRequest);
     }
 }

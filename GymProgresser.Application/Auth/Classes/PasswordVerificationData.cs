@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace GymProgresser.Application.Auth.Classes
 {
-    public class PasswordVerificationRequest
+    public class PasswordVerificationData
     {
         public string PlainPassword { get; set; } = default!;
         public string PasswordHash { get; set; } = default!;
         public string Salt { get; set; } = default!;
 
-        public PasswordVerificationRequest(User user, string plainPassword)
+        public PasswordVerificationData(User user, string plainPassword)
         {
             this.PlainPassword = plainPassword;
             this.PasswordHash = user.PasswordHash;

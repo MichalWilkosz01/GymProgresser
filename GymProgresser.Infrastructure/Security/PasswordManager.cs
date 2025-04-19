@@ -34,7 +34,7 @@ namespace GymProgresser.Infrastructure.Security
             return result;
         }
 
-        public bool VerifyPassword(PasswordVerificationRequest passwordVerificationRequest)
+        public bool VerifyPassword(PasswordVerificationData passwordVerificationRequest)
         {
             var saltBytes = Convert.FromHexString(passwordVerificationRequest.Salt);
 

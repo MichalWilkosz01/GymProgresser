@@ -19,15 +19,21 @@ namespace GymProgresser.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequestDto)
         {
-            await _authService.LoginAsync(loginRequestDto);
-            return Ok();//Zmiana
+            var token = await _authService.LoginAsync(loginRequestDto);
+            return Ok(token);//Zmiana
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequestDto registerRequestDto)
         {
-            await _authService.RegisterAsync(registerRequestDto);
-            return Ok();//Zmiana
+            var token = await _authService.RegisterAsync(registerRequestDto);
+            return Ok(token);//Zmiana
+        }
+
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> RefreshToken()
+        {
+            return Ok();
         }
     }
 }

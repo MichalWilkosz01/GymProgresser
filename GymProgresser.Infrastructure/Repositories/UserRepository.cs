@@ -22,11 +22,12 @@ namespace GymProgresser.Infrastructure.Repositories
             return await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email.ToUpper());
         }
 
-        public async Task AddUserAsync(User user)
+        public async Task<int> AddUserAsync(User user)
         {
             user.Email = user.Email.ToUpper();
             await _dbContext.Users.AddAsync(user);
             await _dbContext.SaveChangesAsync();
+            return user.Id;
         }
 
     }

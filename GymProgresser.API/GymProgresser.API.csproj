@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GymProgresser.Application\GymProgresser.Application.csproj" />
     <ProjectReference Include="..\GymProgresser.Infrastructure\GymProgresser.Infrastructure.csproj" />
   </ItemGroup>
 

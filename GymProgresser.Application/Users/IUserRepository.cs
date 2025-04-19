@@ -10,6 +10,6 @@ namespace GymProgresser.Application.Users
     public interface IUserRepository
     {
         public Task<User?> GetUserByEmailAsync(string email);
-        public Task AddUserAsync(User user);
+        public Task<int> AddUserAsync(User user);
     }
 }

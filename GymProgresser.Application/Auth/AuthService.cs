@@ -2,11 +2,13 @@
 using GymProgresser.Application.Auth.Classes;
 using GymProgresser.Application.Auth.Dtos;
 using GymProgresser.Application.Auth.Interfaces;
+using GymProgresser.Application.Profiles;
 using GymProgresser.Application.Users;
 using GymProgresser.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,12 +19,15 @@ namespace GymProgresser.Application.Auth
         private readonly IValidator<RegisterRequestDto> _validatorRegister;
         private readonly IUserRepository _userRepository;
         private readonly IPasswordManager _passwordManager;
+        private readonly IJwtService _jwtService;
 
-        public AuthService(IValidator<RegisterRequestDto> validatorRegister, IUserRepository userRepository,IPasswordManager passwordManager)
+        public AuthService(IValidator<RegisterRequestDto> validatorRegister, IUserRepository userRepository, 
+                        IPasswordManager passwordManager, IJwtService jwtService)
         {
             _validatorRegister = validatorRegister;
             _userRepository = userRepository;
             _passwordManager = passwordManager;
+            _jwtService = jwtService;
         }
         public async Task<string> LoginAsync(LoginRequestDto loginRequestDto)
         {
@@ -34,12 +39,14 @@ namespace GymProgresser.Application.Auth
             }
 
 
-            var isPasswordValid = _passwordManager.VerifyPassword(new PasswordVerificationRequest(user, loginRequestDto.Password));
+            var isPasswordValid = _passwordManager.VerifyPassword(new PasswordVerificationData(user, loginRequestDto.Password));
 
             if (!isPasswordValid)
                 throw new UnauthorizedAccessException("Nieprawidłowy adres email lub hasło.");
 
-            return "";
+            var res = _jwtService.GenerateToken(user.Id, user.Email);
+
+            return res;
         }
 
 
@@ -68,9 +75,11 @@ namespace GymProgresser.Application.Auth
                 Email = registerRequestDto.Email
             };
 
-            await _userRepository.AddUserAsync(user);
+            user.Id = await _userRepository.AddUserAsync(user);
 
-            return "";
+            var res = _jwtService.GenerateToken(user.Id, user.Email);
+
+            return res;
             //throw new NotImplementedException();
         }
     }
