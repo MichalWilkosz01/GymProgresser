@@ -14,6 +14,7 @@ using System.Reflection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using GymProgresser.Application.Workouts.Interfaces;
 
 
 
@@ -32,7 +33,11 @@ namespace GymProgresser.API
                 {
                     var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
 
-                    // Konfiguracja tokenów JWT
+                    if (jwtSettings == null)
+                    {
+                        throw new InvalidOperationException("JWT settings are not configured properly in appsettings.json");
+                    }
+
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
@@ -40,7 +45,7 @@ namespace GymProgresser.API
                         ValidateLifetime = true,
                         ValidIssuer = jwtSettings.Issuer,
                         ValidAudience = jwtSettings.Audience,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)) // Twój sekret
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)) 
                     };
                 });
 
@@ -78,14 +83,17 @@ namespace GymProgresser.API
             builder.Services.AddValidatorsFromAssemblyContaining<RegisterRequestValidator>();
             var assembly = Assembly.GetExecutingAssembly();
             builder.Services.AddDbContext<GymProgressDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
-            builder.Services.AddScoped<IAuthService, AuthService>();
+            
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IWorkoutRepository, WorkoutRepository>();
             builder.Services.AddScoped<IPasswordManager, PasswordManager>();
+
+            builder.Services.AddScoped<IWorkoutService, WorkoutService>();
+            builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<IJwtService, JwtService>();
             builder.Services.AddScoped<IWorkoutService, WorkoutService>();
 
-            builder.Services.AddScoped<IJwtService, JwtService>();
-            builder.Services.AddScoped<IAuthService, AuthService>();
-            
+
             //builder.Services.AddTransient<ITokenService, TokenService>();
             var app = builder.Build();
             app.UseMiddleware<ExceptionHandlingMiddleware>();

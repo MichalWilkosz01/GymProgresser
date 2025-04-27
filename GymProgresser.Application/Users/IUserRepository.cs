@@ -11,5 +11,6 @@ namespace GymProgresser.Application.Users
     {
         public Task<User?> GetUserByEmailAsync(string email);
         public Task<int> AddUserAsync(User user);
+        public Task<User?> GetUserByIdAsync(int userId);
     }
 }

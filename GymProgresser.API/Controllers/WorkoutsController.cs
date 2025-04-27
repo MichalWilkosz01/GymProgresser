@@ -1,5 +1,5 @@
-﻿using GymProgresser.Application.Workouts;
-using GymProgresser.Application.Workouts.Dtos;
+﻿using GymProgresser.Application.Workouts.Dtos;
+using GymProgresser.Application.Workouts.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +9,7 @@ namespace GymProgresser.API.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
+    [Authorize]
     public class WorkoutsController : ControllerBase
     {
         private readonly IWorkoutService _workoutService;
@@ -21,9 +22,26 @@ namespace GymProgresser.API.Controllers
         [HttpPost]
         public async Task<IActionResult> PostWorkout([FromBody] WorkoutRequestDto workoutRequestDto)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            await _workoutService.PostWorkoutAsync(workoutRequestDto);
-            return Ok();
+            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (int.TryParse(userIdString, out var userId))
+            {
+                var res = await _workoutService.PostWorkoutAsync(workoutRequestDto, userId);
+                return Ok(res);
+            }
+
+            return Unauthorized();
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateWorkout([FromBody] WorkoutRequestDto workoutRequestDto)
+        {
+            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (int.TryParse(userIdString, out var userId))
+            {
+                await _workoutService.UpdateWorkoutAsync(workoutRequestDto, userId);
+                return Ok();
+            }
+            return Unauthorized();
         }
     }
 }

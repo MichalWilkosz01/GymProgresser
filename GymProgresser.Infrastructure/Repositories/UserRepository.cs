@@ -30,5 +30,10 @@ namespace GymProgresser.Infrastructure.Repositories
             return user.Id;
         }
 
+        public async Task<User?> GetUserByIdAsync(int userId)
+        {
+            var res = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            return res;
+        }
     }
 }
