@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace GymProgresser.Application.Workouts.Validators
 {
-    public class WorkoutRequestDtoValidator : AbstractValidator<WorkoutRequestDto>
+    public abstract class BaseWorkoutValidator<T> : AbstractValidator<T> where T : class
     {
-        public WorkoutRequestDtoValidator() 
+        public BaseWorkoutValidator()
         {
-            RuleFor(d => d.DurationMin)
+            RuleFor(d => (int)d.GetType().GetProperty("DurationMin")!.GetValue(d)!)
                 .GreaterThan(0)
                 .WithMessage("Trening musi trwać dłużej niż 0 minut");
         }

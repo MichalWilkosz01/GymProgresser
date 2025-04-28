@@ -43,5 +43,17 @@ namespace GymProgresser.API.Controllers
             }
             return Unauthorized();
         }
+
+        [HttpDelete("{workoutId}")]
+        public async Task<IActionResult> DeleteWorkout([FromRoute] int workoutId)
+        {
+            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (int.TryParse(userIdString, out var userId))
+            {
+                await _workoutService.DeleteWorkoutAsync(workoutId, userId);
+                return Ok();
+            }
+            return Unauthorized();
+        }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GymProgresser.Application.Workouts.Dtos
 {
-    public class WorkoutRequestDto
+    public class UpdateWorkoutRequestDto
     {
         public int? Id { get; set; }
         public DateTime Date { get; set; }

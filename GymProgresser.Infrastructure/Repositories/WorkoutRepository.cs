@@ -39,7 +39,14 @@ namespace GymProgresser.Infrastructure.Repositories
 
         public async Task UpdateWorkoutAsync(Workout workout)
         {
-            _dbContext.Workouts.Update(workout);
+            _dbContext.Attach(workout); 
+            _dbContext.Entry(workout).State = EntityState.Modified;
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteWorkoutAsync(Workout workout)
+        {
+            _dbContext.Workouts.Remove(workout);
             await _dbContext.SaveChangesAsync();
         }
     }
