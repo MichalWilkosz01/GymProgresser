@@ -2,11 +2,6 @@
 using GymProgresser.Domain.Entities;
 using GymProgresser.Infrastructure.EF;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GymProgresser.Infrastructure.Repositories
 {
@@ -37,6 +32,30 @@ namespace GymProgresser.Infrastructure.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
+        public async Task PostWorkoutWithExercisesAsync(Workout workout, int userId, List<ExerciseWorkout>? exercises)
+        {
+            using var transaction = await _dbContext.Database.BeginTransactionAsync();
+
+            try
+            {
+                await _dbContext.Workouts.AddAsync(workout);
+                await _dbContext.SaveChangesAsync();
+
+                foreach (var ex in exercises)
+                    ex.WorkoutId = workout.Id;
+
+                await _dbContext.ExercisesWorkouts.AddRangeAsync(exercises);
+                await _dbContext.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+            }
+            catch 
+            {
+                await transaction.RollbackAsync();
+                throw; // TODO ZMIANA
+            }
+        }
+
         public async Task UpdateWorkoutAsync(Workout workout)
         {
             _dbContext.Attach(workout); 
@@ -49,5 +68,6 @@ namespace GymProgresser.Infrastructure.Repositories
             _dbContext.Workouts.Remove(workout);
             await _dbContext.SaveChangesAsync();
         }
+
     }
 }

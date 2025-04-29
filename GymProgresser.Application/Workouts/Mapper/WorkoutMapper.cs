@@ -10,17 +10,24 @@ namespace GymProgresser.Application.Workouts.Mapper
 {
     public static class WorkoutMapper
     {
-        public static Workout WorkoutRequestDtoToWorkout(WorkoutRequestDto requestDto)
+        public static Workout WorkoutRequestDtoToWorkout(PostWorkoutRequestDto requestDto)
         {
             return new Workout
             {
                 Date = requestDto.Date,
                 DurationMin = requestDto.DurationMin,
                 Note = requestDto.Note,
+                ExerciseWorkouts = requestDto.Exercises?.Select(e => new ExerciseWorkout
+                {
+                    ExerciseId = e.ExerciseId,
+                    Sets = e.Sets,
+                    Reps = e.Reps,
+                    WeightKg = e.WeightKg
+                }).ToList()
             };
         }
 
-        public static void UpdateWorkoutFromDto(Workout workout, WorkoutRequestDto requestDto)
+        public static void UpdateWorkoutFromDto(Workout workout, UpdateWorkoutRequestDto requestDto)
         {
             workout.Date = requestDto.Date;
             workout.DurationMin = requestDto.DurationMin;

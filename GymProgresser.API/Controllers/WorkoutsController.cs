@@ -20,7 +20,7 @@ namespace GymProgresser.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostWorkout([FromBody] WorkoutRequestDto workoutRequestDto)
+        public async Task<IActionResult> PostWorkout([FromBody] PostWorkoutRequestDto workoutRequestDto)
         {
             var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (int.TryParse(userIdString, out var userId))
@@ -33,7 +33,7 @@ namespace GymProgresser.API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateWorkout([FromBody] WorkoutRequestDto workoutRequestDto)
+        public async Task<IActionResult> UpdateWorkout([FromBody] UpdateWorkoutRequestDto workoutRequestDto)
         {
             var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (int.TryParse(userIdString, out var userId))

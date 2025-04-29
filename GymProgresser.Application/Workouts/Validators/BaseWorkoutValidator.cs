@@ -12,9 +12,11 @@ namespace GymProgresser.Application.Workouts.Validators
     {
         public BaseWorkoutValidator()
         {
-            RuleFor(d => (int)d.GetType().GetProperty("DurationMin")!.GetValue(d)!)
+            RuleFor(d => (double)d.GetType().GetProperty("DurationMin")!.GetValue(d)!)
                 .GreaterThan(0)
                 .WithMessage("Trening musi trwać dłużej niż 0 minut");
+
+
         }
     }
 }
