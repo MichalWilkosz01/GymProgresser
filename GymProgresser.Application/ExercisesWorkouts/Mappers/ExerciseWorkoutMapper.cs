@@ -1,5 +1,4 @@
-﻿using GymProgresser.Application.Exercises.Dtos;
-using GymProgresser.Application.ExercisesWorkouts.Dtos;
+﻿using GymProgresser.Application.ExercisesWorkouts.Dtos;
 using GymProgresser.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -22,7 +21,7 @@ namespace GymProgresser.Application.ExercisesWorkouts.Mappers
             };
         }
 
-        public static ExerciseWorkout ExerciseWorkoutFromDto(ExercisesDto dto)
+        public static ExerciseWorkout ExerciseWorkoutFromDto(ExerciseWorkoutDto dto)
         {
             return new ExerciseWorkout()
             {

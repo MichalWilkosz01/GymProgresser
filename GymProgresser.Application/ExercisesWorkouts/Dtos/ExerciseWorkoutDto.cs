@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GymProgresser.Application.Exercises.Dtos
+namespace GymProgresser.Application.ExercisesWorkouts.Dtos
 {
-    public class ExercisesDto
+    public class ExerciseWorkoutDto
     {
         public int ExerciseId { get; set; }
         public int Sets { get; set; }

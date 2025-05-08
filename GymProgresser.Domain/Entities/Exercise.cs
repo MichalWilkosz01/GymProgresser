@@ -13,6 +13,7 @@ namespace GymProgresser.Domain.Entities
         public bool IsVerified { get; set; }
         public string Name { get; set; } = default!;
         public ExerciseCategory Category { get; set; }
+        public int CreatedById { get; set; }
         public List<ExerciseWorkout>? ExercisesWorkout { get; set; } = [];
     }
 }

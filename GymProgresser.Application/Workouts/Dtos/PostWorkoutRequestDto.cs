@@ -1,4 +1,4 @@
-﻿using GymProgresser.Application.Exercises.Dtos;
+﻿using GymProgresser.Application.ExercisesWorkouts.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +12,6 @@ namespace GymProgresser.Application.Workouts.Dtos
         public DateTime Date { get; set; }
         public double DurationMin { get; set; }
         public string? Note { get; set; }
-        public List<ExercisesDto> Exercises { get; set; } = [];
+        public List<ExerciseWorkoutDto> Exercises { get; set; } = [];
     }
 }
