@@ -10,10 +10,10 @@ namespace GymProgresser.Application.Workouts.Interfaces
 {
     public interface IWorkoutService
     {
-        public Task<int> PostWorkoutAsync(WorkoutRequestDto workoutRequestDto, int userId);
-        public Task UpdateWorkoutAsync(WorkoutRequestDto workoutRequestDto, int userId);
+        public Task<int> PostWorkoutAsync(PostWorkoutRequestDto workoutRequestDto, int userId);
+        public Task UpdateWorkoutAsync(UpdateWorkoutRequestDto workoutRequestDto, int userId);
         public Task DeleteWorkoutAsync(int workoutId, int userId);
-        public Task<Workout?> GetWorkoutByIdAsync(int workoutId, int userId);
-        public Task<List<Workout>> GetWorkoutListAsync(int userId);
+        public Task<GetWorkoutResponseDto> GetWorkoutByIdAsync(int workoutId, int userId);
+        public Task<List<GetWorkoutResponseDto>> GetWorkoutListAsync(int userId);
     }
 }

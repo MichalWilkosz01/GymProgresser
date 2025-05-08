@@ -1,5 +1,6 @@
 ﻿using GymProgresser.Application.Workouts.Dtos;
 using GymProgresser.Application.Workouts.Interfaces;
+using GymProgresser.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +8,7 @@ using System.Security.Claims;
 
 namespace GymProgresser.API.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     [Authorize]
     public class WorkoutsController : ControllerBase
@@ -19,8 +20,34 @@ namespace GymProgresser.API.Controllers
             _workoutService = workoutService;
         }
 
+        [HttpGet("{workoutId:int}")]
+        public async Task<IActionResult> GetWorkoutById([FromRoute] int workoutId)
+        {
+            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (int.TryParse(userIdString, out var userId))
+            {
+                var res = await _workoutService.GetWorkoutByIdAsync(workoutId, userId);
+                return Ok(res);
+            }
+
+            return Unauthorized();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetUserWorkouts()
+        {
+            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (int.TryParse(userIdString, out var userId))
+            {
+                var res = await _workoutService.GetWorkoutListAsync(userId);
+                return Ok(res);
+            }
+
+            return Unauthorized();
+        }
+
         [HttpPost]
-        public async Task<IActionResult> PostWorkout([FromBody] WorkoutRequestDto workoutRequestDto)
+        public async Task<IActionResult> PostWorkout([FromBody] PostWorkoutRequestDto workoutRequestDto)
         {
             var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (int.TryParse(userIdString, out var userId))
@@ -33,7 +60,7 @@ namespace GymProgresser.API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateWorkout([FromBody] WorkoutRequestDto workoutRequestDto)
+        public async Task<IActionResult> UpdateWorkout([FromBody] UpdateWorkoutRequestDto workoutRequestDto)
         {
             var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (int.TryParse(userIdString, out var userId))

@@ -13,5 +13,6 @@ namespace GymProgresser.Domain.Entities
         public DateTime Date { get; set; }
         public double DurationMin { get; set; }
         public string? Note { get; set; }
+        public List<ExerciseWorkout> ExercisesWorkout { get; set; } = [];
     }
 }

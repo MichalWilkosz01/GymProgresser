@@ -4,15 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GymProgresser.Domain.Entities
+namespace GymProgresser.Application.Exercises.Dtos
 {
-    public class ExerciseWorkout
+    public class ExercisesDto
     {
-        public int Id { get; set; }
         public int ExerciseId { get; set; }
-        public int WorkoutId { get; set; }
-        public Exercise Exercise { get; set; } = null!;
-        public Workout Workout { get; set; } = null!;
         public int Sets { get; set; }
         public int Reps { get; set; }
         public double WeightKg { get; set; }

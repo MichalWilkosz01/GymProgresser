@@ -11,7 +11,7 @@ namespace GymProgresser.Application.Workouts.Interfaces
     {
         public Task PostWorkoutAsync(Workout workout, int userId);
         public Task<Workout?> GetWorkoutByIdAsync(int workoutId);
-        public Task<List<Workout>?> GetWorkoutsByUserIdAsync(int userId);
+        public Task<List<Workout>> GetWorkoutsByUserIdAsync(int userId);
         public Task UpdateWorkoutAsync(Workout workout);
         public Task DeleteWorkoutAsync(Workout workout);
     }

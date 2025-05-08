@@ -16,8 +16,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using GymProgresser.Application.Workouts.Interfaces;
 
-
-
 namespace GymProgresser.API
 {
     public class Program

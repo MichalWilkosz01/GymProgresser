@@ -12,31 +12,42 @@ namespace GymProgresser.Application.Workouts
     {
         private readonly IUserRepository _userRepository;
         private readonly IWorkoutRepository _workoutRepository;
-        private readonly IValidator<WorkoutRequestDto> _validatorWorkoutRequestDto;
+        private readonly IValidator<PostWorkoutRequestDto> _validatorPostWorkoutRequestDto;
+        private readonly IValidator<UpdateWorkoutRequestDto> _validatoruUpdateWorkoutRequestDto;
         public WorkoutService(IUserRepository userRepository, IWorkoutRepository workoutRepository,
-                                IValidator<WorkoutRequestDto> validatorWorkoutRequestDto)
+                                IValidator<PostWorkoutRequestDto> validatorPostWorkoutRequestDto, 
+                                IValidator<UpdateWorkoutRequestDto> validatoruUpdateWorkoutRequestDto)
         {
             _userRepository = userRepository;
             _workoutRepository = workoutRepository;
-            _validatorWorkoutRequestDto = validatorWorkoutRequestDto;
+            _validatorPostWorkoutRequestDto = validatorPostWorkoutRequestDto;
+            _validatoruUpdateWorkoutRequestDto = validatoruUpdateWorkoutRequestDto;
         }
 
-        public async Task<int> PostWorkoutAsync(WorkoutRequestDto workoutRequestDto, int userId)
+        public async Task<int> PostWorkoutAsync(PostWorkoutRequestDto workoutRequestDto, int userId)
         {
-            var validationResult = await _validatorWorkoutRequestDto.ValidateAsync(workoutRequestDto);
+            var validationResult = await _validatorPostWorkoutRequestDto.ValidateAsync(workoutRequestDto);
 
             if (!validationResult.IsValid)
             {
                 throw new ValidationException(validationResult.Errors);
             }
 
-            var user = await _userRepository.GetUserByIdAsync(userId);
-            if (user == null)
-            {
-                throw new KeyNotFoundException($"User with id {userId} was not found.");
-            }
+            var user = await GetAndValidateUserAsync(userId);
 
             var res = WorkoutMapper.WorkoutRequestDtoToWorkout(workoutRequestDto);
+            if (workoutRequestDto.Exercises != null && workoutRequestDto.Exercises.Any())
+            {
+                res.ExercisesWorkout = workoutRequestDto.Exercises
+                    .Select(exerciseDto => new ExerciseWorkout
+                    {
+                        ExerciseId = exerciseDto.ExerciseId, 
+                        Sets = exerciseDto.Sets,
+                        Reps = exerciseDto.Reps,
+                        WeightKg = exerciseDto.WeightKg
+                    })
+                    .ToList();
+            }
             await _workoutRepository.PostWorkoutAsync(res, userId);
 
             return res.Id;
@@ -47,7 +58,7 @@ namespace GymProgresser.Application.Workouts
             if (updateWorkoutRequestDto.Id == null)
                 throw new ArgumentException("Workout ID must be provided for update.");
 
-            var validationResult = await _validatorWorkoutRequestDto.ValidateAsync(updateWorkoutRequestDto);
+            var validationResult = await _validatoruUpdateWorkoutRequestDto.ValidateAsync(updateWorkoutRequestDto);
 
             if (!validationResult.IsValid)
             {
@@ -68,15 +79,21 @@ namespace GymProgresser.Application.Workouts
             await _workoutRepository.DeleteWorkoutAsync(workout);
         }
 
-        public Task<Workout?> GetWorkoutByIdAsync(int workoutId, int userId)
+        public async Task<GetWorkoutResponseDto> GetWorkoutByIdAsync(int workoutId, int userId)
         {
+            var workout = await GetAndValidateWorkoutAsync(workoutId, userId);
 
-            throw new NotImplementedException();
+            if (workout == null)
+                throw new KeyNotFoundException($"Workout with ID {workoutId} not found.");
+
+            return WorkoutMapper.GetWorkoutDtoFromWorkout(workout);
         }
 
-        public Task<List<Workout>> GetWorkoutListAsync(int userId)
+        public async Task<List<GetWorkoutResponseDto>> GetWorkoutListAsync(int userId)
         {
-            throw new NotImplementedException();
+            var user = await GetAndValidateUserAsync(userId);
+            var workouts = await _workoutRepository.GetWorkoutsByUserIdAsync(userId);
+            return workouts.Select(w => WorkoutMapper.GetWorkoutDtoFromWorkout(w)).ToList();
         }
 
         private async Task<Workout> GetAndValidateWorkoutAsync(int workoutId, int userId)
@@ -90,6 +107,17 @@ namespace GymProgresser.Application.Workouts
                 throw new UnauthorizedAccessException("You are not authorized to access this workout.");
 
             return workout;
+        }
+
+        private async Task<User> GetAndValidateUserAsync(int userId)
+        {
+            var user = await _userRepository.GetUserByIdAsync(userId);
+            if (user == null)
+            {
+                throw new KeyNotFoundException($"User with id {userId} was not found.");
+            }
+
+            return user;
         }
     }
 }

@@ -20,13 +20,19 @@ namespace GymProgresser.Infrastructure.Repositories
 
         public async Task<Workout?> GetWorkoutByIdAsync(int workoutId)
         {
-            var res = await _dbContext.Workouts.FirstOrDefaultAsync(w => w.Id == workoutId);
+            var res = await _dbContext.Workouts
+                                .Include(w => w.ExercisesWorkout) 
+                                .ThenInclude(ew => ew.Exercise)   
+                                .FirstOrDefaultAsync(w => w.Id == workoutId);
             return res;
         }
 
-        public async Task<List<Workout>?> GetWorkoutsByUserIdAsync(int userId)
+        public async Task<List<Workout>> GetWorkoutsByUserIdAsync(int userId)
         {
-            var res = await _dbContext.Workouts.Where(w => w.UserId == userId).ToListAsync();
+            var res = await _dbContext.Workouts
+                                .Include(w => w.ExercisesWorkout)
+                                .ThenInclude(ew => ew.Exercise)
+                                .Where(w => w.UserId == userId).ToListAsync();
             return res;
         }
 
