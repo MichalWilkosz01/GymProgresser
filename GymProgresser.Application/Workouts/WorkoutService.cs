@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using GymProgresser.Application.Auth.Dtos;
-using GymProgresser.Application.Users;
+using GymProgresser.Application.Users.Interfaces;
 using GymProgresser.Application.Workouts.Dtos;
 using GymProgresser.Application.Workouts.Interfaces;
 using GymProgresser.Application.Workouts.Mapper;

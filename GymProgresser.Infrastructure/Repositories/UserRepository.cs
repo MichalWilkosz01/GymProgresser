@@ -1,4 +1,4 @@
-﻿using GymProgresser.Application.Users;
+﻿using GymProgresser.Application.Users.Interfaces;
 using GymProgresser.Domain.Entities;
 using GymProgresser.Infrastructure.EF;
 using Microsoft.EntityFrameworkCore;

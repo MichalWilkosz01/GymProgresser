@@ -2,7 +2,6 @@ using FluentValidation;
 using GymProgresser.Application.Auth;
 using GymProgresser.Application.Auth.Interfaces;
 using GymProgresser.Application.Auth.Validators;
-using GymProgresser.Application.Users;
 using GymProgresser.Application.Workouts;
 using GymProgresser.Infrastructure.EF;
 using GymProgresser.Infrastructure.Middlewares;
@@ -15,6 +14,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using GymProgresser.Application.Workouts.Interfaces;
+using GymProgresser.Application.Users.Interfaces;
+using GymProgresser.Application.Exercises.Interfaces;
+using GymProgresser.Application.Exercises;
 
 namespace GymProgresser.API
 {
@@ -90,6 +92,9 @@ namespace GymProgresser.API
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IJwtService, JwtService>();
             builder.Services.AddScoped<IWorkoutService, WorkoutService>();
+
+            builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
+            builder.Services.AddScoped<IExerciseService, ExerciseService>();
 
 
             //builder.Services.AddTransient<ITokenService, TokenService>();

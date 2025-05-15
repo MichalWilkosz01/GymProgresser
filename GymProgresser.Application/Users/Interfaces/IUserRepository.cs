@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GymProgresser.Application.Users
+namespace GymProgresser.Application.Users.Interfaces
 {
     public interface IUserRepository
     {

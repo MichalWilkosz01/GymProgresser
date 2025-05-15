@@ -3,7 +3,7 @@ using GymProgresser.Application.Auth.Classes;
 using GymProgresser.Application.Auth.Dtos;
 using GymProgresser.Application.Auth.Interfaces;
 using GymProgresser.Application.Profiles;
-using GymProgresser.Application.Users;
+using GymProgresser.Application.Users.Interfaces;
 using GymProgresser.Domain.Entities;
 using System;
 using System.Collections.Generic;
