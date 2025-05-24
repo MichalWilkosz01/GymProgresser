@@ -1,0 +1,22 @@
+<div *ngIf="!error" class="host-wrapper">
+    <div *ngIf="loading" class="loading">Ładowanie...</div>
+
+    <div *ngIf="!loading && exercise" class="exercise-details">
+        <h2>Szczegóły ćwiczenia</h2>
+        <p><strong>Nazwa:</strong> {{ exercise.name }}</p>
+        <p><strong>Kategoria:</strong> {{ exercise.category }}</p>
+        <p><strong>Etykieta:</strong> {{ exercise.label }}</p>
+        <p>
+            <strong>Status:</strong>
+            <span class="status" [ngClass]="exercise.isVerified ? 'verified' : 'unverified'">
+                {{ exercise.isVerified ? 'Zweryfikowane' : 'Niezweryfikowane' }}
+            </span>
+        </p>
+        <p><strong>Opis:</strong> {{ exercise.description }}</p>
+    </div>
+    <div class="button-wrapper">
+        <button class="back-button" (click)="goBack()">Powrót do listy</button>
+    </div>
+</div>
+
+<div *ngIf="error" class="error-message">{{ error }}</div>

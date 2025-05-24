@@ -29,7 +29,7 @@ namespace GymProgresser.Application.Auth
             _passwordManager = passwordManager;
             _jwtService = jwtService;
         }
-        public async Task<string> LoginAsync(LoginRequestDto loginRequestDto)
+        public async Task<TokenResponseDto> LoginAsync(LoginRequestDto loginRequestDto)
         {
             var user = await _userRepository.GetUserByEmailAsync(loginRequestDto.Email);
 
@@ -44,13 +44,16 @@ namespace GymProgresser.Application.Auth
             if (!isPasswordValid)
                 throw new UnauthorizedAccessException("Nieprawidłowy adres email lub hasło.");
 
-            var res = _jwtService.GenerateToken(user.Id, user.Email);
+            var token = _jwtService.GenerateToken(user.Id, user.Email);
 
-            return res;
+            return new TokenResponseDto() 
+            {
+                AccessToken = token
+            };
         }
 
 
-        public async Task<string> RegisterAsync(RegisterRequestDto registerRequestDto)
+        public async Task<TokenResponseDto> RegisterAsync(RegisterRequestDto registerRequestDto)
         {
             var validationResult = await _validatorRegister.ValidateAsync(registerRequestDto);
             if (!validationResult.IsValid)
@@ -79,8 +82,12 @@ namespace GymProgresser.Application.Auth
 
             var res = _jwtService.GenerateToken(user.Id, user.Email);
 
-            return res;
-            //throw new NotImplementedException();
+            var token = _jwtService.GenerateToken(user.Id, user.Email);
+
+            return new TokenResponseDto()
+            {
+                AccessToken = token
+            };
         }
     }
 }

@@ -1,0 +1,26 @@
+<div *ngIf="error" class="error-message">
+    {{ error }}
+</div>
+
+<div *ngIf="(exercises$ | async) as exercises">
+    <div class="exercise-grid">
+        <div *ngFor="let exercise of exercises" class="exercise-card" (click)="onExerciseClick(exercise.id)"
+            style="cursor: pointer;">
+
+            <div class="exercise-header">
+                <h3 class="exercise-name">{{ exercise.name }}</h3>
+                <span class="status" [ngClass]="exercise.isVerified ? 'verified' : 'unverified'">
+                    {{ exercise.isVerified ? 'Zweryfikowany' : 'Niezweryfikowany' }}
+                </span>
+            </div>
+            <div class="exercise-info">
+                <p><strong>Kategoria:</strong> {{ exercise.label }}</p>
+            </div>
+        </div>
+    </div>
+
+
+    <div *ngIf="exercises.length === 0" class="empty-message">
+        Brak treningów do wyświetlenia.
+    </div>
+</div>

@@ -9,7 +9,7 @@ namespace GymProgresser.Application.Auth.Interfaces
 {
     public interface IAuthService
     {
-        public Task<string> RegisterAsync(RegisterRequestDto registerRequestDto);
-        public Task<string> LoginAsync(LoginRequestDto loginRequestDto);
+        public Task<TokenResponseDto> RegisterAsync(RegisterRequestDto registerRequestDto);
+        public Task<TokenResponseDto> LoginAsync(LoginRequestDto loginRequestDto);
     }
 }

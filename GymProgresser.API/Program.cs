@@ -26,6 +26,19 @@ namespace GymProgresser.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", policy =>
+                {
+                    policy
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
+            });
+
+            
+
             builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -99,7 +112,9 @@ namespace GymProgresser.API
 
             //builder.Services.AddTransient<ITokenService, TokenService>();
             var app = builder.Build();
+            app.UseCors("AllowAll");
             app.UseMiddleware<ExceptionHandlingMiddleware>();
+            
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

@@ -63,14 +63,31 @@ namespace GymProgresser.Application.Exercises
             return res;
         }
 
-        public Task<List<GetExerciseResponseDto>> GetVerifiedExercisesAsync()
+        public async Task<List<GetExerciseResponseDto>> GetVerifiedExercisesAsync()
         {
-            throw new NotImplementedException();
+            var exercises = await _exerciseRepository.GetAllVerifiedExercisesAsync();
+            List<GetExerciseResponseDto> res = new List<GetExerciseResponseDto>();
+            if (exercises != null)
+            {
+                res = exercises.Select(ExerciseMapper.GetExerciseDtoFromEntity).ToList();
+            }
+
+            return res;
         }
 
-        public Task<List<GetExerciseResponseDto>> GetVerifiedExercisesByCategoryAsync(string category)
+        public async Task<List<GetExerciseResponseDto>> GetVerifiedExercisesByCategoryAsync(string category)
         {
-            throw new NotImplementedException();
+            if (!Enum.TryParse<ExerciseCategory>(category, ignoreCase: true, out var parsedCategory))
+                throw new ArgumentException($"Invalid category: {category}");
+
+            var exercises = await _exerciseRepository.GetAllVerifiedExercisesByCategoryAsync(parsedCategory);
+            List<GetExerciseResponseDto> res = new List<GetExerciseResponseDto>();
+            if (exercises != null)
+            {
+                res = exercises.Select(ExerciseMapper.GetExerciseDtoFromEntity).ToList();
+            }
+
+            return res;
         }
 
         public async Task<int> PostExerciseAsync(PostExerciseRequestDto exerciseRequestDto, int userId)

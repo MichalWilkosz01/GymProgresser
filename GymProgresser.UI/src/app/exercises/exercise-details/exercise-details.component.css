@@ -1,0 +1,122 @@
+/* Ogólne tło */
+/* Ogólne tło – tylko jeśli nie ma błędu */
+.host-wrapper {
+  display: block;
+  padding: 2rem;
+  font-family: 'Inter', sans-serif;
+  background-color: #f9fafb;
+}
+
+
+/* Karta szczegółów */
+.exercise-details {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 24px 32px;
+  max-width: 600px;
+  margin: 0 auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  animation: fadeIn 0.3s ease;
+}
+
+/* Nagłówek */
+.exercise-details h2 {
+  margin-top: 0;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 1rem;
+}
+
+/* Akapity */
+.exercise-details p {
+  margin: 8px 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+.exercise-details strong {
+  color: #555;
+}
+
+/* Status */
+.exercise-details .status {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 4px 10px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: 9999px;
+  text-transform: uppercase;
+}
+
+.exercise-details .verified {
+  background-color: #e6f4ea;
+  color: #2e7d32;
+  border: 1px solid #b2dfdb;
+}
+
+.exercise-details .unverified {
+  background-color: #fdecea;
+  color: #c62828;
+  border: 1px solid #f5c6cb;
+}
+
+/* Error */
+.error-message {
+  background-color: #ffebee;
+  color: #b71c1c;
+  border: 1px solid #f5c6cb;
+  padding: 12px 18px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  margin: 16px;
+  font-family: 'Inter', sans-serif;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Ładowanie */
+div:has(> .loading),
+.loading {
+  text-align: center;
+  color: #888;
+  font-style: italic;
+  margin: 2rem 0;
+}
+
+/* Animacja wejścia */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.back-button {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  padding: 8px 16px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #2c3e50;
+  background-color: #e0e7ff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.back-button:hover {
+  background-color: #c7d2fe;
+}
+
+.button-wrapper {
+  text-align: center;
+  margin-top: 2rem;
+}

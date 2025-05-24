@@ -1,0 +1,59 @@
+.add-workout-page {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  font-family: 'Inter', sans-serif;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.half-width {
+  width: 48%;
+  margin-bottom: 1rem;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.form-section {
+  margin-bottom: 2rem;
+}
+
+.exercise-card {
+  background: #f9f9f9;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+  border: 1px solid #ddd;
+}
+
+.btn-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.my-3 {
+  margin: 1rem 0;
+}
+
+.btn-row.left {
+  justify-content: flex-start;
+  margin-top: 0.5rem;
+}
+
+.third-width {
+  width: 32%;
+  margin-bottom: 1rem;
+}

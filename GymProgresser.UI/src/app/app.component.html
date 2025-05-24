@@ -1,0 +1,27 @@
+<nav class="navbar">
+  <div class="navbar-logo">
+    <a routerLink="/">🏋️ GymProgresser</a>
+  </div>
+
+  <input type="checkbox" id="toggle" class="navbar-toggle">
+  <label for="toggle" class="navbar-icon">&#9776;</label>
+
+  <div class="navbar-links">
+    <!-- Linki dostępne dla wszystkich -->
+    <a routerLink="/exercises" routerLinkActive="active">Ćwiczenia</a>
+    <a routerLink="/workouts" routerLinkActive="active">Treningi</a>
+
+    <ng-container *ngIf="!authService.isAuthenticated(); else loggedIn">
+      <a routerLink="/login" routerLinkActive="active">Logowanie</a>
+    </ng-container>
+
+    <!-- Linki widoczne tylko dla zalogowanego użytkownika -->
+    <ng-template #loggedIn>
+      <a (click)="logout()" style="cursor: pointer;">Wyloguj</a>
+    </ng-template>
+
+
+  </div>
+</nav>
+
+<router-outlet></router-outlet>

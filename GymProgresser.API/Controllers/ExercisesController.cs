@@ -51,5 +51,19 @@ namespace GymProgresser.API.Controllers
             var res = await _exerciseService.GetExercisesByCategoryAsync(category);
             return Ok(res);
         }
+
+        [HttpGet("verified")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetVerifiedExercises([FromQuery] string? category = null)
+        {
+
+            if (string.IsNullOrEmpty(category))
+            {
+                var all = await _exerciseService.GetVerifiedExercisesAsync();
+                return Ok(all);
+            }
+            var res = await _exerciseService.GetVerifiedExercisesByCategoryAsync(category);
+            return Ok(res);
+        }
     }
 }

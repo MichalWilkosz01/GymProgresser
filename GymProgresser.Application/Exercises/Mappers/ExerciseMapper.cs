@@ -26,6 +26,7 @@ namespace GymProgresser.Application.Exercises.Mappers
         {
             return new GetExerciseResponseDto()
             {
+                Id = exercise.Id,
                 IsVerified = exercise.IsVerified,
                 Name = exercise.Name,
                 Category = exercise.Category.ToString(),

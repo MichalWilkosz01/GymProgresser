@@ -11,6 +11,5 @@ namespace GymProgresser.Application.Auth.Dtos
         public string Email { get; set; } = default!;
         public string Password { get; set; } = default!;
         public string ConfirmPassword { get; set; } = default!;
-        public DateOnly? CreatedAt { get; set; }
     }
 }
