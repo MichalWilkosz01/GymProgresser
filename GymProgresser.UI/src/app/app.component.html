@@ -9,7 +9,8 @@
   <div class="navbar-links">
     <!-- Linki dostępne dla wszystkich -->
     <a routerLink="/exercises" routerLinkActive="active">Ćwiczenia</a>
-    <a routerLink="/workouts" routerLinkActive="active">Treningi</a>
+    <a routerLink="/workouts" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Treningi</a>
+    <a routerLink="/workouts/history" routerLinkActive="active">Historia</a>
 
     <ng-container *ngIf="!authService.isAuthenticated(); else loggedIn">
       <a routerLink="/login" routerLinkActive="active">Logowanie</a>

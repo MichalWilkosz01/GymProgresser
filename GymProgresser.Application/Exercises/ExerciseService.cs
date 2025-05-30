@@ -63,6 +63,18 @@ namespace GymProgresser.Application.Exercises
             return res;
         }
 
+        public async Task<List<GetExerciseResponseDto>> GetExercisesPerformedByUserAsync(int userId)
+        {
+            await GetAndValidateUserAsync(userId);
+            var exercises = await _exerciseRepository.GetExercisesPerformedByUserAsync(userId);
+            List<GetExerciseResponseDto> res = new List<GetExerciseResponseDto>();
+            if (exercises != null)
+            {
+                res = exercises.Select(ExerciseMapper.GetExerciseDtoFromEntity).ToList();
+            }
+            return res;
+        }
+
         public async Task<List<GetExerciseResponseDto>> GetVerifiedExercisesAsync()
         {
             var exercises = await _exerciseRepository.GetAllVerifiedExercisesAsync();

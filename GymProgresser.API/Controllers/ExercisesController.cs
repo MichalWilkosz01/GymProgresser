@@ -39,6 +39,19 @@ namespace GymProgresser.API.Controllers
             return Ok(res);
         }
 
+        [HttpGet("performed")]
+        public async Task<IActionResult> GetPerformedExercise()
+        {
+            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (int.TryParse(userIdString, out var userId))
+            {
+                var res = await _exerciseService.GetExercisesPerformedByUserAsync(userId);
+                return Ok(res);
+            }
+
+            return Unauthorized();
+        }
+
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> GetExercises([FromQuery] string? category = null)

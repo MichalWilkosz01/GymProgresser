@@ -14,6 +14,7 @@ namespace GymProgresser.Application.ExercisesWorkouts.Mappers
         {
             return new GetExerciseWorkoutResponseDto()
             {
+                ExerciseId = exercisesWorkout.ExerciseId,
                 ExerciseName = exercisesWorkout.Exercise.Name,
                 Sets = exercisesWorkout.Sets,
                 Reps = exercisesWorkout.Reps,

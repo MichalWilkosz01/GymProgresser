@@ -1,5 +1,5 @@
 export interface WorkoutExercise {
-  exerciseId: number;
+  exerciseName: string;
   sets: number;
   reps: number;
   weightKg: number;

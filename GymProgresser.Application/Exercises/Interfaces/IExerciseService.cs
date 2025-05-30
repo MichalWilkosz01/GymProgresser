@@ -15,5 +15,6 @@ namespace GymProgresser.Application.Exercises.Interfaces
         public Task<List<GetExerciseResponseDto>> GetExercisesByCategoryAsync(string category);
         public Task<List<GetExerciseResponseDto>> GetVerifiedExercisesAsync();
         public Task<List<GetExerciseResponseDto>> GetVerifiedExercisesByCategoryAsync(string category);
+        public Task<List<GetExerciseResponseDto>> GetExercisesPerformedByUserAsync(int userId);
     }
 }

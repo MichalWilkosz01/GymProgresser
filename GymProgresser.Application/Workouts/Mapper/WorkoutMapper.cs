@@ -42,6 +42,7 @@ namespace GymProgresser.Application.Workouts.Mapper
         {
             return new GetWorkoutResponseDto
             {
+                Id = workout.Id,
                 Date = workout.Date,
                 DurationMin = workout.DurationMin,
                 Note = workout.Note,

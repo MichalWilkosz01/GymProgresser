@@ -20,7 +20,7 @@
         <div class="exercise-list">
           <h4>Ćwiczenia:</h4>
           <div *ngFor="let exercise of workout.exercises" class="exercise-details">
-            <p><strong>Nazwa:</strong> {{ exercise.exerciseId }}</p>
+            <p><strong>Nazwa:</strong> {{ exercise.exerciseName }}</p>
             <p><strong>Serie:</strong> {{ exercise.sets }}</p>
             <p><strong>Powtórzenia:</strong> {{ exercise.reps }}</p>
             <p><strong>Ciężar:</strong> {{ exercise.weightKg }} kg</p>

@@ -57,6 +57,16 @@ namespace GymProgresser.Infrastructure.Repositories
             return res;
         }
 
+        public async Task<List<Exercise>?> GetExercisesPerformedByUserAsync(int userId)
+        {
+            var exercises = await _dbContext.ExercisesWorkouts
+                                .Where(es => es.Workout.UserId == userId)
+                                .Select(es => es.Exercise)
+                                .Distinct()
+                                .ToListAsync();
+            return exercises;
+        }
+
         public async Task PostExerciseAsync(Exercise exercise, int userId)
         {
             await _dbContext.AddAsync(exercise);

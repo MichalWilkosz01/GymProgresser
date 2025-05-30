@@ -8,6 +8,7 @@ namespace GymProgresser.Application.ExercisesWorkouts.Dtos
 {
     public class GetExerciseWorkoutResponseDto
     {
+        public int ExerciseId { get; set; }
         public string ExerciseName { get; set; } = null!;
         public int Sets { get; set; }
         public int Reps { get; set; }

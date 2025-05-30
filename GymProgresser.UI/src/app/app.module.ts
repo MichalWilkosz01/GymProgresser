@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { LoginComponent } from './auth/login/login.component';
@@ -14,8 +14,11 @@ import { authInterceptor } from './auth/auth.interceptor';
 import { AddWorkoutComponent } from './workouts/add-workout/add-workout/add-workout.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MaterialModule } from './shared/material.module';
+import { registerLocaleData } from '@angular/common';
+import localePl from '@angular/common/locales/pl';
+import { WorkoutsHistoryComponent } from './workouts/workouts-history/workouts-history.component';
 
-
+registerLocaleData(localePl);
 
 @NgModule({
   declarations: [
@@ -26,6 +29,7 @@ import { MaterialModule } from './shared/material.module';
     ExerciseDetailsComponent,
     WorkoutsComponent,
     AddWorkoutComponent,
+    WorkoutsHistoryComponent,
     
   ],
   imports: [
@@ -40,6 +44,7 @@ import { MaterialModule } from './shared/material.module';
   providers: [
     provideHttpClient(withInterceptors([authInterceptor])), 
     provideAnimationsAsync(),
+    {provide: LOCALE_ID, useValue: 'pl'}
   ],
   bootstrap: [AppComponent]
 })

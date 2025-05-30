@@ -10,6 +10,7 @@ namespace GymProgresser.Application.Workouts.Dtos
 {
     public class GetWorkoutResponseDto
     {
+        public int Id { get; set; }
         public DateTime Date { get; set; }
         public double DurationMin { get; set; }
         public string? Note { get; set; }
