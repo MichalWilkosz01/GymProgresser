@@ -17,6 +17,7 @@ import { MaterialModule } from './shared/material.module';
 import { registerLocaleData } from '@angular/common';
 import localePl from '@angular/common/locales/pl';
 import { WorkoutsHistoryComponent } from './workouts/workouts-history/workouts-history.component';
+import { NgChartsModule } from 'ng2-charts';
 
 registerLocaleData(localePl);
 
@@ -39,7 +40,7 @@ registerLocaleData(localePl);
     HttpClientModule,
     FormsModule,
     MaterialModule,
-    
+    NgChartsModule
   ],
   providers: [
     provideHttpClient(withInterceptors([authInterceptor])), 

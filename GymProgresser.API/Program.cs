@@ -17,6 +17,9 @@ using GymProgresser.Application.Workouts.Interfaces;
 using GymProgresser.Application.Users.Interfaces;
 using GymProgresser.Application.Exercises.Interfaces;
 using GymProgresser.Application.Exercises;
+using GymProgresser.Application.ExercisesWorkouts.Interfaces;
+using GymProgresser.Application.Progress.Interfaces;
+using GymProgresser.Application.Progress;
 
 namespace GymProgresser.API
 {
@@ -108,6 +111,10 @@ namespace GymProgresser.API
 
             builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
             builder.Services.AddScoped<IExerciseService, ExerciseService>();
+
+            builder.Services.AddScoped<IExerciseWorkoutRepository, ExerciseWorkoutRepository>();
+            builder.Services.AddScoped<IProgressService, ProgressService>();
+
 
 
             //builder.Services.AddTransient<ITokenService, TokenService>();

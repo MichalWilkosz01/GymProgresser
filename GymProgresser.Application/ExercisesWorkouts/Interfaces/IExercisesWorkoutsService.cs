@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GymProgresser.Application.ExercisesWorkouts.Interfaces
 {
-    public interface IExercisesWorkouts
+    public interface IExercisesWorkoutsService
     {
         public Task<List<GetExerciseWorkoutResponseDto>?> GetUserExercisesWorkoutsAsync(int userId);
     }

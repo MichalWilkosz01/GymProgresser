@@ -1,0 +1,105 @@
+.margin-top {
+    margin-top: 1rem;
+}
+
+.section-history {
+    margin-top: 2rem;
+}
+
+.chart-container {
+    width: 100%;
+    max-width: 900px;
+
+    margin: 0 auto;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+
+.forecast-input {
+    width: 80px;
+}
+
+:host {
+    display: block;
+    max-width: 700px;
+    margin: 2rem auto;
+    padding: 2rem;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Etykiety */
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+/* Select */
+select.form-select {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+}
+
+/* Komunikat o braku ćwiczeń */
+.no-exercises {
+    margin-top: 0.5rem;
+    color: #cc0000;
+    font-weight: 500;
+}
+
+/* Przycisk */
+button {
+    padding: 0.5rem 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+button:not(:disabled):hover {
+    background-color: #0056b3;
+}
+
+/* Wykres */
+canvas {
+    display: block;
+    image-rendering: crisp-edges;
+    max-width: 100%;
+}
+
+
+/* Input prognozy */
+input[type="number"] {
+    padding: 0.4rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+/* Ostrzeżenie o regresji */
+.forecast-warning {
+    margin-top: 1rem;
+    color: #cc0000;
+    font-style: italic;
+}
+

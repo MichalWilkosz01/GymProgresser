@@ -1,4 +1,5 @@
-﻿using GymProgresser.Application.Progress.Interfaces;
+﻿using GymProgresser.Application.ExercisesWorkouts.Interfaces;
+using GymProgresser.Application.Progress.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,10 +20,27 @@ namespace GymProgresser.API.Controllers
         }
 
         [HttpGet("{exerciseId}/predict")]
-        public IActionResult GetPredictProgress([FromRoute] int exerciseId)
+        public async Task<IActionResult> GetPredictProgress([FromRoute] int exerciseId, [FromQuery] int predictionPoints)
         {
             var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            return Ok();
+            if (int.TryParse(userIdString, out var userId))
+            {
+                var res = await _progressService.GetPrediction(userId, exerciseId, predictionPoints);
+                return Ok(res);
+            }
+            return Unauthorized();
+        }
+
+        [HttpGet("history/{exerciseId}")]
+        public async Task<IActionResult> GetExerciseHistory([FromRoute] int exerciseId)
+        {
+            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (int.TryParse(userIdString, out var userId))
+            {
+                var res = await _progressService.GetExerciseHistory(userId, exerciseId);
+                return Ok(res);
+            }
+            return Unauthorized();
         }
     }
 }

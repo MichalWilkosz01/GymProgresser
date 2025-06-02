@@ -1,1 +1,52 @@
-<p>workouts-history works!</p>
+<div>
+    <label for="exercise-select">Wybierz ćwiczenie:</label>
+
+    <!-- Dropdown z ćwiczeniami -->
+    <ng-container *ngIf="exercises.length > 0; else noExercises">
+        <select id="exercise-select" [(ngModel)]="selectedExerciseId" class="form-select" aria-label="Lista ćwiczeń">
+            <option *ngFor="let exercise of exercises" [value]="exercise.id">
+                {{ exercise.label }} - {{ exercise.name }}{{ exercise.isVerified ? ' ✔️' : '' }}
+            </option>
+        </select>
+    </ng-container>
+
+    <!-- Komunikat, gdy brak danych -->
+    <ng-template #noExercises>
+        <div class="no-exercises">
+            Nie znaleziono żadnych wykonanych ćwiczeń przez użytkownika.
+        </div>
+    </ng-template>
+</div>
+
+<!-- Przycisk historii -->
+<div class="margin-top">
+    <button (click)="showHistory()" [disabled]="!selectedExerciseId || exercises.length === 0">
+        Pokaż historię
+    </button>
+</div>
+
+<!-- Sekcja z historią i wykresem -->
+<div *ngIf="history.length > 0" class="section-history">
+    <!-- Wykres -->
+    <div class="chart-container">
+        <canvas baseChart [data]="chartData" [type]="chartType" [options]="chartOptions"></canvas>
+    </div>
+
+    <!-- Sekcja przewidywania -->
+    <div class="margin-top">
+        <label for="forecast">Ile punktów do przodu przewidzieć:</label>
+        <input id="forecast" type="number" min="1" [(ngModel)]="forecastLength" class="forecast-input" />
+
+        <div *ngIf="history.length > 0 && history.length < 5" class="forecast-warning">
+            Aby wyświetlić regresję liniową, potrzebujesz co najmniej 5 treningów.
+        </div>
+
+        <div class="forecast-group margin-top">
+            <button (click)="showForecast()" [disabled]="!forecastLength || history.length < 5">
+                Pokaż prognozę
+            </button>
+        </div>
+
+
+    </div>
+</div>
