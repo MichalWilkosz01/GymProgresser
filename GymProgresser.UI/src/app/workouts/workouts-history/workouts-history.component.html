@@ -45,7 +45,12 @@
             <button (click)="showForecast()" [disabled]="!forecastLength || history.length < 5">
                 Pokaż prognozę
             </button>
+
+            <button class="remove-button margin-left" (click)="removeForecast()">
+                Usuń prognozę
+            </button>
         </div>
+
 
 
     </div>

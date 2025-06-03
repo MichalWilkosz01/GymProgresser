@@ -50,36 +50,23 @@ namespace GymProgresser.Application.Progress
             return res;
         }
 
-        public async Task<List<DataPoint>> GetPrediction(int userId, int exerciseId, int predictionPoints)
+        public async Task<RegressionCoefficients> GetPredictionCoefficients(int userId, int exerciseId, int predictionPoints)
         {
             var allPerformedExercises = await GetUserExerciseHistoryAsync(userId, exerciseId);
-            // 1. Przygotuj dane historyczne do regresji
+
             var x = Enumerable.Range(1, allPerformedExercises.Count).Select(i => (double)i).ToArray();
             var y = allPerformedExercises
-                .Select(e => e.Reps * e.WeightKg * e.Sets) // objętość treningowa
+                .Select(e => e.Reps * e.WeightKg * e.Sets)
                 .Select(v => (double)v)
                 .ToArray();
 
-            // 2. Oblicz regresję liniową
             var (slope, intercept) = CalculateLinearRegression(x, y);
 
-            // 3. Generuj przyszłe punkty
-            var prediction = new List<DataPoint>();
-            int nextIndex = allPerformedExercises.Count + 1;
-
-            for (int i = 0; i < predictionPoints; i++)
+            return new RegressionCoefficients
             {
-                var xVal = nextIndex + i;
-                var predictedVolume = slope * xVal + intercept;
-
-                prediction.Add(new DataPoint
-                {
-                    X = xVal,             // np. nr sesji
-                    Y = predictedVolume
-                });
-            }
-
-            return prediction;
+                Slope = slope,
+                Intercept = intercept
+            };
         }
 
         private async Task<List<ExerciseWorkout>> GetUserExerciseHistoryAsync(int userId, int exerciseId)

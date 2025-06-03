@@ -25,7 +25,7 @@ namespace GymProgresser.API.Controllers
             var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (int.TryParse(userIdString, out var userId))
             {
-                var res = await _progressService.GetPrediction(userId, exerciseId, predictionPoints);
+                var res = await _progressService.GetPredictionCoefficients(userId, exerciseId, predictionPoints);
                 return Ok(res);
             }
             return Unauthorized();

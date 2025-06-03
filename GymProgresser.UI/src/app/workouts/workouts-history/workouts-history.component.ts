@@ -38,6 +38,16 @@ export class WorkoutsHistoryComponent implements OnInit {
         enabled: true,
         callbacks: {
           label: (tooltipItem) => {
+            const datasetLabel = tooltipItem.dataset.label;
+
+            // Dla regresji liniowej – pokazujemy wartości (X, Y)
+            if (datasetLabel === 'Przewidywany progres') {
+              const x = tooltipItem.parsed.x;
+              const y = tooltipItem.parsed.y;
+              return `Przewidywana objętość treningowa: ${y.toFixed(1)}kg`;
+            }
+
+            // Dla danych historycznych – klasyczny format reps x weight
             const point = tooltipItem.raw as DataPoint;
             return `${point.reps} x ${point.weightKg} kg (${point.sets} serie)`;
           }
@@ -54,7 +64,6 @@ export class WorkoutsHistoryComponent implements OnInit {
 
     scales: {
       x: {
-        type: 'linear',
         title: {
           display: true,
           text: 'Ilość treningów'
@@ -122,42 +131,79 @@ export class WorkoutsHistoryComponent implements OnInit {
   }
 
   showForecast(): void {
-  if (!this.selectedExerciseId) return;
+    if (!this.selectedExerciseId) return;
 
-  const endpoint = `Progress/${this.selectedExerciseId}/predict`;
-  const params = new HttpParams().set('predictionPoints', this.forecastLength);
+    const endpoint = `Progress/${this.selectedExerciseId}/predict`;
+    const params = new HttpParams().set('predictionPoints', this.forecastLength);
 
-  this.api.get<any[]>(endpoint, params).subscribe({
-    next: (data) => {
-      console.log('Dane prognozy:', data);
+    this.api.get<{ slope: number, intercept: number }>(endpoint, params).subscribe({
+      next: (data) => {
+        console.log('Współczynniki regresji:', data);
 
-      if (!Array.isArray(data)) {
-        console.error('Nieprawidłowa odpowiedź z serwera – oczekiwano tablicy punktów.');
-        return;
-      }
+        if (!this.chart?.chart?.data?.datasets?.length) {
+          console.error('Brak danych wejściowych na wykresie.');
+          return;
+        }
 
-      const regressionDataset = {
-        label: 'Regresja liniowa',
-        data: data.map(point => ({ x: point.x, y: point.y })),
-        borderColor: '#888',
-        borderDash: [5, 5],
-        fill: false,
-        pointRadius: 0,
-        tension: 0.3
-      };
+        // Zakładamy, że dane użytkownika są w pierwszym dataset
+        const userData = this.chart.chart.data.datasets[0]?.data ?? [];
+        const historyLength = userData.length;
 
-      if (this.chart?.chart) {
-        this.chart.chart.data.labels = []; // Niepotrzebne przy danych x/y, ale dla porządku
-        this.chart.chart.data.datasets = [regressionDataset];
+        const totalLength = historyLength + this.forecastLength;
+        const labels = Array.from({ length: totalLength }, (_, i) => i + 1);
+        const regression = labels.map(x => data.slope * x + data.intercept);
+
+        const regressionDataset = {
+          label: 'Przewidywany progres',
+          data: regression,
+          borderColor: '#888',
+          pointBackgroundColor: '#888',
+          pointBorderColor: '#888',
+          borderDash: [5, 5],
+          fill: false,
+          pointRadius: 3, // zamiast 0
+          pointHoverRadius: 5,
+          pointHitRadius: 10,
+          tension: 0.3
+        };
+
+
+        // Usuń poprzednią regresję, jeśli istnieje
+        const filteredDatasets = this.chart.chart.data.datasets.filter(ds => ds.label !== 'Przewidywany progres');
+
+        // Nadpisz labels i datasets
+        this.chart.chart.data.labels = labels;
+        this.chart.chart.data.datasets = [
+          ...filteredDatasets,
+          regressionDataset
+        ];
+
         this.chart.update();
+      },
+      error: (err) => {
+        console.error('Błąd podczas pobierania współczynników regresji:', err);
       }
-    },
-    error: (err) => {
-      console.error('Błąd podczas pobierania danych prognozy:', err);
-    }
-  });
-}
+    });
+  }
 
+
+
+  removeForecast(): void {
+    if (!this.chart?.chart?.data?.datasets?.length) return;
+
+    const regressionLabel = 'Przewidywany progres';
+
+    // Usuń dataset regresji
+    this.chart.chart.data.datasets = this.chart.chart.data.datasets.filter(
+      ds => ds.label !== regressionLabel
+    );
+
+    // Przywróć oryginalne długości labels, jeśli zostały rozszerzone
+    const userData = this.chart.chart.data.datasets[0]?.data ?? [];
+    this.chart.chart.data.labels = userData.map((_, i) => i + 1);
+
+    this.chart.update();
+  }
 
 
 

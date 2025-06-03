@@ -10,6 +10,6 @@ namespace GymProgresser.Application.Progress.Interfaces
     public interface IProgressService
     {
         public Task<ExerciseHistory> GetExerciseHistory(int userId, int exerciseId);
-        public Task<List<DataPoint>> GetPrediction(int userId, int exerciseId, int predictionPoints);
+        public Task<RegressionCoefficients> GetPredictionCoefficients(int userId, int exerciseId, int predictionPoints);
     }
 }

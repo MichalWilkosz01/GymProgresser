@@ -103,3 +103,8 @@ input[type="number"] {
     font-style: italic;
 }
 
+
+
+.margin-left {
+  margin-left: 10px;
+}
