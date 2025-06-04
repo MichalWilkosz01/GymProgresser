@@ -23,4 +23,13 @@ export class WorkoutService {
         console.log(`${this.endpoint}/${workoutId}`);
         return this.api.delete<void>(`${this.endpoint}/${workoutId}`);
     }
+
+    getWorkoutById(id: number): Observable<WorkoutDetails> {
+        return this.api.get<WorkoutDetails>(`${this.endpoint}/${id}`);
+    }
+
+    updateWorkout(id: number, workout: any): Observable<void> {
+        console.log(workout);
+        return this.api.put<void>(`${this.endpoint}`, workout);
+    }
 }

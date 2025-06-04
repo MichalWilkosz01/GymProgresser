@@ -5,6 +5,7 @@ import { WorkoutWithState } from './workout-with-state.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../shared/confirm-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -23,7 +24,7 @@ export class WorkoutsComponent {
   error: string | null = null;
 
 
-  constructor(private workoutService: WorkoutService, private dialog: MatDialog, private snackBar: MatSnackBar) { }
+  constructor(private workoutService: WorkoutService, private dialog: MatDialog, private snackBar: MatSnackBar, private router: Router) { }
 
   ngOnInit(): void {
     this.loadWorkouts();
@@ -37,7 +38,7 @@ export class WorkoutsComponent {
           ...workout,
           showExercises: false,
           menuOpen: false
-        }));
+        })).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
       },
       error: () => (this.error = 'Nie udało się pobrać treningów.')
     });
@@ -48,13 +49,14 @@ export class WorkoutsComponent {
   }
 
   addWorkout(): void {
-    if (!this.newWorkout.note.trim()) return;
-
+    //if (!this.newWorkout.note.trim()) return;
+    console.log('XD');
     const workoutToAdd: WorkoutDetails = {
       ...this.newWorkout,
       date: new Date().toISOString(),
       exercises: this.newWorkout.exercises || []
     };
+
 
     this.workoutService.addWorkout(workoutToAdd).subscribe({
       next: (workout) => {
@@ -92,9 +94,9 @@ export class WorkoutsComponent {
   }
 
   editWorkout(workout: WorkoutDetails): void {
-    // przykładowa nawigacja (Angular Router)
-    // this.router.navigate(['/edit', workout.id]);
-    console.log('Edytuj', workout);
+    if (workout.id != null) {
+      this.router.navigate(['/edit', workout.id]);
+    }
   }
 
   deleteWorkout(workout: WorkoutWithState): void {

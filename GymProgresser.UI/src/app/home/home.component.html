@@ -2,7 +2,7 @@
     <main class="hero">
         <h1>Śledź swój progres na siłowni!</h1>
         <p>Zaplanuj treningi, monitoruj postępy i osiągaj cele szybciej dzięki GymProgesser.</p>
-        <a *ngIf="!(authService.isAuthenticated$ | async)" routerLink="/register" class="btn-primary">Rozpocznij teraz</a>
+        <a *ngIf="!(authService.isAuthenticated$ | async)" routerLink="/login" class="btn-primary">Zaloguj się</a>
         <a *ngIf="authService.isAuthenticated$ | async" routerLink="/workouts/add" class="btn-primary">Dodaj trening</a>
     </main>
 

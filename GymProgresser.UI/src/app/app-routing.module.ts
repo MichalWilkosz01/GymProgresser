@@ -15,7 +15,8 @@ const routes: Routes = [
   { path: 'exercises/:id', component: ExerciseDetailsComponent },
   { path: 'workouts', component: WorkoutsComponent },
   { path: 'workouts/add', component: WorkoutFormComponent },
-  { path: 'workouts/history', component: WorkoutsHistoryComponent}
+  { path: 'workouts/history', component: WorkoutsHistoryComponent},
+  { path: 'edit/:id', component: WorkoutFormComponent }
 ];
 
 @NgModule({
