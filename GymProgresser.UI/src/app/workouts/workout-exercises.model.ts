@@ -6,6 +6,7 @@ export interface WorkoutExercise {
 }
 
 export interface WorkoutDetails {
+  id?: number;
   date: string;
   durationMin: number;
   note: string;

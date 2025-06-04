@@ -11,13 +11,14 @@ import { ExerciseDetailsComponent } from './exercises/exercise-details/exercise-
 import { WorkoutsComponent } from './workouts/workouts.component';
 import { FormsModule } from '@angular/forms';
 import { authInterceptor } from './auth/auth.interceptor';
-import { AddWorkoutComponent } from './workouts/add-workout/add-workout/add-workout.component';
+
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MaterialModule } from './shared/material.module';
 import { registerLocaleData } from '@angular/common';
 import localePl from '@angular/common/locales/pl';
 import { WorkoutsHistoryComponent } from './workouts/workouts-history/workouts-history.component';
 import { NgChartsModule } from 'ng2-charts';
+import { WorkoutFormComponent } from './workouts/workout-form/workout-form/workout-form.component';
 
 registerLocaleData(localePl);
 
@@ -29,7 +30,7 @@ registerLocaleData(localePl);
     ExercisesComponent,
     ExerciseDetailsComponent,
     WorkoutsComponent,
-    AddWorkoutComponent,
+    WorkoutFormComponent,
     WorkoutsHistoryComponent,
     
   ],

@@ -5,6 +5,13 @@
       <span class="plus-icon">+</span>
     </a>
   </div>
+  <div class="sort-container">
+    <label for="sortSelect">Sortuj według daty:</label>
+    <select id="sortSelect" (change)="onSortChange($event)" class="sort-select">
+      <option value="desc">Najnowsze (↓)</option>
+      <option value="asc">Najstarsze (↑)</option>
+    </select>
+  </div>
 
   <div *ngIf="error" class="error-message">
     {{ error }}
@@ -13,11 +20,25 @@
   <ul class="workout-list" *ngIf="workouts.length > 0">
     <li *ngFor="let workout of workouts">
       <h3>{{ workout.date | date: 'longDate' }}</h3>
+      <div class="menu-wrapper">
+        <button class="menu-button" (click)="toggleMenu(workout)">
+          &#8942; <!-- unicode trzy kropki pionowe -->
+        </button>
+
+        <div class="menu-dropdown" *ngIf="workout.menuOpen">
+          <a (click)="editWorkout(workout)">Edytuj</a>
+          <a (click)="deleteWorkout(workout)">Usuń</a>
+        </div>
+      </div>
       <p><strong>Czas trwania:</strong> {{ workout.durationMin }} min</p>
       <p><strong>Notatka:</strong> {{ workout.note }}</p>
 
       <ng-container *ngIf="workout.exercises && workout.exercises.length > 0; else noExercises">
-        <div class="exercise-list">
+        <button (click)="toggleExercises(workout)" class="toggle-btn">
+          {{ workout.showExercises ? 'Ukryj ćwiczenia' : 'Pokaż ćwiczenia' }}
+        </button>
+
+        <div class="exercise-list" *ngIf="workout.showExercises">
           <h4>Ćwiczenia:</h4>
           <div *ngFor="let exercise of workout.exercises" class="exercise-details">
             <p><strong>Nazwa:</strong> {{ exercise.exerciseName }}</p>

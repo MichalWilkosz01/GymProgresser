@@ -21,6 +21,9 @@ export class ApiService {
   }
 
   delete<T>(endpoint: string): Observable<T> {
+    console.log(`Usun ${this.baseUrl}/${endpoint}`);
     return this.http.delete<T>(`${this.baseUrl}/${endpoint}`);
   }
 }
+//http://localhost:5031/api/Workouts/23
+//http://localhost:5031/api/workouts/23

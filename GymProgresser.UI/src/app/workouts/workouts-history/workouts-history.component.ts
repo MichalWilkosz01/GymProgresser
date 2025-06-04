@@ -5,6 +5,10 @@ import { DataPoint } from './data-point.model';
 import { ChartConfiguration, ChartType } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { HttpParams } from '@angular/common/http';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+import autoTable from 'jspdf-autotable';
+import {formatDate} from '@angular/common';
 
 @Component({
   selector: 'app-workouts-history',
@@ -205,6 +209,59 @@ export class WorkoutsHistoryComponent implements OnInit {
     this.chart.update();
   }
 
+  saveChartAsPDF(): void {
+    const chartElement = document.querySelector('.chart-container') as HTMLElement;
 
+    if (!chartElement) {
+      console.error('Nie znaleziono wykresu do zapisania.');
+      return;
+    }
+
+    html2canvas(chartElement).then(canvas => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const imgProps = pdf.getImageProperties(imgData);
+      const imgWidth = pageWidth - 20;
+      const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
+
+      pdf.setFontSize(14);
+      const now = formatDate(new Date(), 'dd.MM.yyyy', 'pl');
+      pdf.text(`Wygenerowano: ${now}`, 10, 10);
+      pdf.addImage(imgData, 'PNG', 10, 15, imgWidth, imgHeight);
+
+      const startY = 20 + imgHeight + 10;
+
+      // 🔢 Dane do tabeli z numeracją
+      const tableBody = this.history.map((point, index) => [
+        index + 1,
+        //point.date,
+        `${point.reps * point.weightKg * point.sets} kg`,
+        `${point.sets}`,
+        `${point.reps}`
+      ]);
+
+      autoTable(pdf, {
+        head: [['Lp.', 'Objetosc treningowa (kg)', 'Serie', 'Powtorzenia']],
+        body: tableBody,
+        startY: startY,
+        theme: 'grid', // ✅ automatyczne linie siatki poziome + pionowe
+        styles: {
+          fontSize: 10,
+          font: 'Inter'
+        },
+        headStyles: {
+          font: 'Inter',
+          fontStyle: 'bold',
+          fillColor: [230, 230, 230],
+          textColor: [0, 0, 0] // ✅ ciemna czcionka w nagłówku
+        }
+      });
+
+
+      pdf.save(`Historia ${this.exerciseName}.pdf`);
+    });
+  }
 
 }

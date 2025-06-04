@@ -4,11 +4,11 @@ import { Exercise } from '../../../exercises/exercise.model';
 import { ApiService } from '../../../core/api.service';
 
 @Component({
-  selector: 'app-add-workout',
-  templateUrl: './add-workout.component.html',
-  styleUrl: './add-workout.component.css'
+  selector: 'app-workout-form',
+  templateUrl: './workout-form.component.html',
+  styleUrl: './workout-form.component.css'
 })
-export class AddWorkoutComponent implements OnInit {
+export class WorkoutFormComponent implements OnInit {
   workoutForm: FormGroup;
   exercises: Exercise[] = [];
 

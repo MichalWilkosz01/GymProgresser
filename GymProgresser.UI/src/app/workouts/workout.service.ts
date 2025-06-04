@@ -7,7 +7,7 @@ import { WorkoutDetails } from './workout-exercises.model';
 
 @Injectable({ providedIn: 'root' })
 export class WorkoutService {
-    endpoint = 'workouts';
+    endpoint = 'Workouts';
 
     constructor(private api: ApiService) { }
 
@@ -17,5 +17,10 @@ export class WorkoutService {
 
     addWorkout(workout: WorkoutDetails): Observable<WorkoutDetails> {
         return this.api.post<WorkoutDetails>(this.endpoint, workout);
+    }
+
+    deleteWorkout(workoutId: number): Observable<void> {
+        console.log(`${this.endpoint}/${workoutId}`);
+        return this.api.delete<void>(`${this.endpoint}/${workoutId}`);
     }
 }
