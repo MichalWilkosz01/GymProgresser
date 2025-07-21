@@ -50,6 +50,23 @@ namespace GymProgresser.Application.Progress
             return res;
         }
 
+        public double GetOneRepMax(double weight, int reps)
+        {
+            if (reps <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(reps), "Repetitions must be greater than zero.");
+            }
+            if (reps <= 10)
+            {
+                double multiplier = 1 / (0.522 + 0.419 * Math.Pow(Math.E, -0.055 * reps));
+                return weight * multiplier;
+            }
+            else 
+            {
+                return weight * (1 + (reps / 30.0));
+            }
+        }
+
         public async Task<RegressionCoefficients> GetPredictionCoefficients(int userId, int exerciseId, int predictionPoints)
         {
             var allPerformedExercises = await GetUserExerciseHistoryAsync(userId, exerciseId);

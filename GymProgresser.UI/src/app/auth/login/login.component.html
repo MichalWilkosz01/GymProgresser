@@ -1,11 +1,13 @@
 <div class="login-page">
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-card">
-    <h2>Zaloguj się</h2>
+  <form [formGroup]="isRegisterMode ? registerForm : loginForm" (ngSubmit)="onSubmit()" class="login-card">
+
+    <h2 *ngIf="!isRegisterMode">Zaloguj się</h2>
+    <h2 *ngIf="isRegisterMode">Zarejestruj się</h2>
 
     <div class="form-group">
       <label for="email">Email</label>
       <input formControlName="email" id="email" type="email" placeholder="np. jan@example.com" />
-      <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="error">
+      <div *ngIf="form.get('email')?.invalid && form.get('email')?.touched" class="error">
         Wprowadź poprawny adres email.
       </div>
     </div>
@@ -13,15 +15,29 @@
     <div class="form-group">
       <label for="password">Hasło</label>
       <input formControlName="password" id="password" type="password" placeholder="wpisz swoje hasło" />
-      <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="error">
+      <div *ngIf="form.get('password')?.invalid && form.get('password')?.touched" class="error">
         Hasło jest wymagane.
       </div>
     </div>
 
-    <button type="submit" [disabled]="loginForm.invalid">Zaloguj się</button>
+    <!-- tylko w rejestracji -->
+    <div class="form-group" *ngIf="isRegisterMode">
+      <label for="confirmPassword">Potwierdź hasło</label>
+      <input formControlName="confirmPassword" id="confirmPassword" type="password" placeholder="powtórz hasło" />
+      <div *ngIf="form.get('confirmPassword')?.invalid && form.get('confirmPassword')?.touched" class="error">
+        Pole wymagane.
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="form.invalid">
+      {{ isRegisterMode ? 'Zarejestruj się' : 'Zaloguj się' }}
+    </button>
 
     <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+    <span class="toggle-button" (click)="toggleMode()" role="button">
+      {{ isRegisterMode ? 'Masz już konto? Zaloguj się' : 'Nie masz konta? Zarejestruj się' }}
+    </span>
+
   </form>
 </div>
-
-

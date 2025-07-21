@@ -20,6 +20,7 @@ using GymProgresser.Application.Exercises;
 using GymProgresser.Application.ExercisesWorkouts.Interfaces;
 using GymProgresser.Application.Progress.Interfaces;
 using GymProgresser.Application.Progress;
+using GymProgresser.Infrastructure;
 
 namespace GymProgresser.API
 {
@@ -121,7 +122,11 @@ namespace GymProgresser.API
             var app = builder.Build();
             app.UseCors("AllowAll");
             app.UseMiddleware<ExceptionHandlingMiddleware>();
-            
+            using (var scope = app.Services.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<GymProgressDbContext>();
+                ExerciseSeeder.SeedExercises(context);
+            }
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

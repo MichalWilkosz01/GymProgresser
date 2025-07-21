@@ -11,5 +11,6 @@ namespace GymProgresser.Application.Progress.Interfaces
     {
         public Task<ExerciseHistory> GetExerciseHistory(int userId, int exerciseId);
         public Task<RegressionCoefficients> GetPredictionCoefficients(int userId, int exerciseId, int predictionPoints);
+        public double GetOneRepMax(double weight, int reps);
     }
 }

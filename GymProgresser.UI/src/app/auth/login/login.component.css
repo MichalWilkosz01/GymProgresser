@@ -1,7 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap');
 
 /* Zapobiega problemom z paddingiem i szerokością */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -39,7 +41,8 @@ body {
   margin-bottom: 2rem;
   font-weight: 700;
   font-size: 1.8rem;
-  color: #0f172a; /* ✨ ciemny granat – elegancki, neutralny */
+  color: #0f172a;
+  /* ✨ ciemny granat – elegancki, neutralny */
   letter-spacing: -0.3px;
 }
 
@@ -130,11 +133,31 @@ button:disabled {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
+.toggle-button {
+  display: inline-block;
+  margin-top: 1rem;
+  color: #3b82f6;
+  cursor: pointer;
+  font-size: 0.9rem;
+  text-decoration: underline;
+  padding: 0.4rem;
+  text-align: center;
+  border: none;
+  background: transparent;
+  outline: none;
+  box-shadow: none;
+  width: 100%;
+}
+
+.toggle-button:hover {
+  color: #2563eb;
+}
 
 

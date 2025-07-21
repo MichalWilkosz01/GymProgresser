@@ -1,0 +1,52 @@
+<div class="one-rep-max-container">
+  <h1>Kalkulator 1RM</h1>
+
+  <form (ngSubmit)="calculateOneRepMax()" #form="ngForm" novalidate>
+    <label for="weight">Ciężar (kg):</label>
+    <input 
+      type="number" 
+      id="weight" 
+      name="weight" 
+      [(ngModel)]="weight" 
+      #weightInput="ngModel" 
+      required 
+      min="0.1" 
+      step="0.1"
+      [disabled]="isLoading"
+      aria-describedby="weightError"
+    >
+    <div *ngIf="weightInput.invalid && (weightInput.dirty || weightInput.touched)" id="weightError" class="error">
+      Proszę podać poprawny ciężar (minimum 0.1 kg).
+    </div>
+
+    <label for="reps">Powtórzenia:</label>
+    <input 
+      type="number" 
+      id="reps" 
+      name="reps" 
+      [(ngModel)]="reps" 
+      #repsInput="ngModel" 
+      required 
+      min="1" 
+      [disabled]="isLoading"
+      aria-describedby="repsError"
+    >
+    <div *ngIf="repsInput.invalid && (repsInput.dirty || repsInput.touched)" id="repsError" class="error">
+      Liczba powórzeń musi być większa niż 0
+    </div>
+
+    <button type="submit" [disabled]="form.invalid || isLoading">Oblicz</button>
+  </form>
+
+  <div *ngIf="isLoading" class="loading">
+    Ładowanie...
+  </div>
+
+  <div *ngIf="errorMessage" class="error">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="result !== null" class="result">
+    <p><strong>Szacowane 1RM:</strong> {{ result | number:'1.1-1' }} kg</p>
+  </div>
+</div>

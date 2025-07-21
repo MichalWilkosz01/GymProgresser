@@ -8,7 +8,7 @@ import { HttpParams } from '@angular/common/http';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import autoTable from 'jspdf-autotable';
-import {formatDate} from '@angular/common';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-workouts-history',
@@ -107,32 +107,40 @@ export class WorkoutsHistoryComponent implements OnInit {
       .get<{ exerciseName: string; history: DataPoint[] }>(url)
       .subscribe(response => {
         this.exerciseName = response.exerciseName;
-        this.history = response.history;
 
-        // aktualizacja wykresu
+        // Oblicz objętość dla każdego punktu
+        this.history = response.history.map(p => ({
+          ...p,
+          volume: p.weightKg * p.reps * (p.sets ?? 1)
+        }));
+
+        // aktualizacja wykresu objętości
         this.chartData = {
           labels: this.history.map(p => `${p.x}`),
           datasets: [
             {
-              data: this.history,
-              label: `${this.exerciseName}`,
+              data: this.history.map(p => p.weightKg * p.reps * (p.sets ?? 1)),
+              label: `Objętość: ${this.exerciseName}`,
               fill: false,
               tension: 0.3
             }
           ]
         };
+
+
         if (this.chartOptions) {
           this.chartOptions.plugins = {
             ...this.chartOptions.plugins,
             title: {
               display: true,
-              text: `Historia: ${this.exerciseName}`,
+              text: `Objętość treningowa: ${this.exerciseName}`,
               font: { size: 18 }
             }
           };
         }
       });
   }
+
 
   showForecast(): void {
     if (!this.selectedExerciseId) return;
@@ -237,13 +245,13 @@ export class WorkoutsHistoryComponent implements OnInit {
       const tableBody = this.history.map((point, index) => [
         index + 1,
         //point.date,
-        `${point.reps * point.weightKg * point.sets} kg`,
+        `${point.weightKg} kg`,
         `${point.sets}`,
         `${point.reps}`
       ]);
 
       autoTable(pdf, {
-        head: [['Lp.', 'Objetosc treningowa (kg)', 'Serie', 'Powtorzenia']],
+        head: [['Lp.', 'Ciezar (kg)', 'Serie', 'Powtorzenia']],
         body: tableBody,
         startY: startY,
         theme: 'grid', // ✅ automatyczne linie siatki poziome + pionowe

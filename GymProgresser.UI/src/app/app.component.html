@@ -7,21 +7,18 @@
   <label for="toggle" class="navbar-icon">&#9776;</label>
 
   <div class="navbar-links">
-    <!-- Linki dostępne dla wszystkich -->
     <a routerLink="/exercises" routerLinkActive="active">Ćwiczenia</a>
-    <a routerLink="/workouts" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Treningi</a>
-    <a routerLink="/workouts/history" routerLinkActive="active">Historia</a>
-
+    <a routerLink="/one-rep-max" routerLinkActive="active">Kalkulator 1RM</a>
+    
     <ng-container *ngIf="!authService.isAuthenticated(); else loggedIn">
       <a routerLink="/login" routerLinkActive="active">Logowanie</a>
     </ng-container>
 
-    <!-- Linki widoczne tylko dla zalogowanego użytkownika -->
     <ng-template #loggedIn>
+      <a routerLink="/workouts" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Treningi</a>
+      <a routerLink="/workouts/history" routerLinkActive="active">Historia</a>
       <a (click)="logout()" style="cursor: pointer;">Wyloguj</a>
     </ng-template>
-
-
   </div>
 </nav>
 

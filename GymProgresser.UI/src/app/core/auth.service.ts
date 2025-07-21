@@ -15,8 +15,12 @@ export class AuthService {
                 localStorage.setItem('accessToken', response.accessToken);
                 this.isAuthenticatedSubject.next(true);
             }),
-            map(() => void 0) 
+            map(() => void 0)
         );
+    }
+
+    register(credentials: { email: string; password: string; confirmPassword: string }): Observable<void> {
+        return this.api.post<void>('Auth/register', credentials);
     }
 
     logout() {

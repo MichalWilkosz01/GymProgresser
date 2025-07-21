@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
 
@@ -10,29 +10,62 @@ import { AuthService } from '../../core/auth.service';
 })
 export class LoginComponent {
   errorMessage = '';
+  isRegisterMode = false;
 
   loginForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', Validators.required],
   });
 
-  constructor(private fb: FormBuilder, private auth: AuthService, private router: Router) {}
+  registerForm = this.fb.group({
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', Validators.required],
+    confirmPassword: ['', Validators.required],
+  });
+
+  constructor(private fb: FormBuilder, private auth: AuthService, private router: Router) { }
+
+  get form(): FormGroup {
+    return this.isRegisterMode ? this.registerForm : this.loginForm;
+  }
+
+  toggleMode() {
+    this.isRegisterMode = !this.isRegisterMode;
+    this.errorMessage = '';
+    this.form.reset();
+  }
 
   onSubmit() {
-    if (this.loginForm.invalid) return;
+    if (this.form.invalid) return;
 
-    const { email, password } = this.loginForm.value;
-    if (email && password) {
+    const { email, password, confirmPassword } = this.form.value;
+
+    if (this.isRegisterMode) {
+      if (password !== confirmPassword) {
+        this.errorMessage = 'Hasła nie są zgodne.';
+        return;
+      }
+
+      this.auth.register({ email, password, confirmPassword }).subscribe({
+        next: () => {
+          this.errorMessage = '';
+          alert('Rejestracja zakończona sukcesem. Możesz się teraz zalogować.');
+          this.toggleMode(); // przełącz na logowanie
+        },
+        error: () => {
+          this.errorMessage = 'Rejestracja nie powiodła się. Spróbuj ponownie.';
+        }
+      });
+    } else {
       this.auth.login({ email, password }).subscribe({
         next: (token) => {
           console.log('Otrzymany token:', token);
           this.router.navigate(['/']);
         },
-        error: (error) => {
-          console.error('Error log in:', error);   
-          this.errorMessage = 'Nieprawidłowy email lub hasło';
+        error: () => {
+          this.errorMessage = 'Nieprawidłowy email lub hasło.';
         }
       });
-    } 
+    }
   }
 }

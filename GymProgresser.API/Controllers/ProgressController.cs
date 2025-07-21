@@ -42,5 +42,13 @@ namespace GymProgresser.API.Controllers
             }
             return Unauthorized();
         }
+
+        [AllowAnonymous]
+        [HttpPost("1-rep-max")]
+        public IActionResult GetOneRepMax(double weight, int reps)
+        {
+            var res = _progressService.GetOneRepMax(weight, reps);
+            return Ok(res);
+        }
     }
 }

@@ -4,8 +4,7 @@
     <div *ngIf="!loading && exercise" class="exercise-details">
         <h2>Szczegóły ćwiczenia</h2>
         <p><strong>Nazwa:</strong> {{ exercise.name }}</p>
-        <p><strong>Kategoria:</strong> {{ exercise.category }}</p>
-        <p><strong>Etykieta:</strong> {{ exercise.label }}</p>
+        <p><strong>Kategoria:</strong> {{ exercise.label }}</p>
         <p>
             <strong>Status:</strong>
             <span class="status" [ngClass]="exercise.isVerified ? 'verified' : 'unverified'">

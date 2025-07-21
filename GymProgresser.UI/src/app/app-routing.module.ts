@@ -7,16 +7,19 @@ import { ExerciseDetailsComponent } from './exercises/exercise-details/exercise-
 import { WorkoutsComponent } from './workouts/workouts.component';
 import { WorkoutsHistoryComponent } from './workouts/workouts-history/workouts-history.component';
 import { WorkoutFormComponent } from './workouts/workout-form/workout-form/workout-form.component';
+import { authGuard } from './core/auth.guard';
+import { OneRepMaxComponent } from './one-rep-max/one-rep-max.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: '', component: HomeComponent },
   { path: 'exercises', component: ExercisesComponent },
   { path: 'exercises/:id', component: ExerciseDetailsComponent },
-  { path: 'workouts', component: WorkoutsComponent },
-  { path: 'workouts/add', component: WorkoutFormComponent },
-  { path: 'workouts/history', component: WorkoutsHistoryComponent},
-  { path: 'edit/:id', component: WorkoutFormComponent }
+  { path: 'workouts', component: WorkoutsComponent, canActivate: [authGuard] },
+  { path: 'workouts/add', component: WorkoutFormComponent, canActivate: [authGuard] },
+  { path: 'workouts/history', component: WorkoutsHistoryComponent, canActivate: [authGuard]},
+  { path: 'edit/:id', component: WorkoutFormComponent, canActivate: [authGuard] },
+  { path: 'one-rep-max', component: OneRepMaxComponent}
 ];
 
 @NgModule({
