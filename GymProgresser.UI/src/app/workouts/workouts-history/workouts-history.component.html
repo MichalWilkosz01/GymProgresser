@@ -5,7 +5,7 @@
     <ng-container *ngIf="exercises.length > 0; else noExercises">
         <select id="exercise-select" [(ngModel)]="selectedExerciseId" class="form-select" aria-label="Lista ćwiczeń">
             <option *ngFor="let exercise of exercises" [value]="exercise.id">
-                {{ exercise.label }} - {{ exercise.name }}{{ exercise.isVerified ? ' ✔️' : '' }}
+                {{ exercise.label }} - {{ exercise.name }}
             </option>
         </select>
     </ng-container>

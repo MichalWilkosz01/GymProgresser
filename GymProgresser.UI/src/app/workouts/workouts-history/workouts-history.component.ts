@@ -53,6 +53,7 @@ export class WorkoutsHistoryComponent implements OnInit {
 
             // Dla danych historycznych – klasyczny format reps x weight
             const point = tooltipItem.raw as DataPoint;
+            
             return `${point.reps} x ${point.weightKg} kg (${point.sets} serie)`;
           }
         }
@@ -92,7 +93,6 @@ export class WorkoutsHistoryComponent implements OnInit {
     this.api.get<ExercisePerformed[]>(this.performedExercisesEndpoint).subscribe(result => {
       this.exercises = result;
 
-      // Domyślny wybór pierwszego ćwiczenia (jeśli istnieje)
       if (this.exercises.length > 0) {
         this.selectedExerciseId = this.exercises[0].id;
       }
@@ -107,19 +107,24 @@ export class WorkoutsHistoryComponent implements OnInit {
       .get<{ exerciseName: string; history: DataPoint[] }>(url)
       .subscribe(response => {
         this.exerciseName = response.exerciseName;
-
-        // Oblicz objętość dla każdego punktu
+        
         this.history = response.history.map(p => ({
           ...p,
           volume: p.weightKg * p.reps * (p.sets ?? 1)
         }));
+        console.log(history);
 
-        // aktualizacja wykresu objętości
         this.chartData = {
           labels: this.history.map(p => `${p.x}`),
           datasets: [
             {
-              data: this.history.map(p => p.weightKg * p.reps * (p.sets ?? 1)),
+              data: this.history.map(p => ({
+              x: p.x,           
+              y: p.weightKg * p.reps * (p.sets ?? 1),      
+              reps: p.reps,     
+              weightKg: p.weightKg, 
+              sets: p.sets      
+            })),
               label: `Objętość: ${this.exerciseName}`,
               fill: false,
               tension: 0.3
@@ -127,7 +132,7 @@ export class WorkoutsHistoryComponent implements OnInit {
           ]
         };
 
-
+        console.log(this.chartData);
         if (this.chartOptions) {
           this.chartOptions.plugins = {
             ...this.chartOptions.plugins,
